@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Swargaseema – Property Enquiry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --maroon:      #3d0c10;
+      --maroon-2:    #5a1318;
+      --gold:        #b8892e;
+      --gold-soft:   #d4a84b;
+      --off-white:   #fafaf8;
+      --surface:     #ffffff;
+      --border:      #e8e4dc;
+      --border-focus:#b8892e;
+      --text-primary:#1a1410;
+      --text-muted:  #7a7060;
+      --text-label:  #4a3f35;
+      --input-bg:    #fdfcfa;
+    }
+
+    html { font-size: 15px; }
+
+    body {
+      background: var(--off-white);
+      min-height: 100vh;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-primary);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 16px 64px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 640px;
+      animation: fadeUp .5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--maroon);
+    }
+
+    .header-rule {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 auto 18px;
+      max-width: 200px;
+    }
+
+    .header-rule::before, .header-rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.5;
+    }
+
+    .header-rule-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--text-primary);
+      letter-spacing: 0.01em;
+      margin-bottom: 6px;
+    }
+
+    .page-sub {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .card-section {
+      padding: 32px 36px;
+    }
+
+    .card-section + .card-section {
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field.span-2 { grid-column: 1 / -1; }
+
+    label {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-label);
+      letter-spacing: 0.04em;
+    }
+
+    .req { color: var(--gold); margin-left: 2px; font-weight: 400; }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color .18s, box-shadow .18s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #c0b8ae;
+      font-weight: 300;
+    }
+
+    input:hover, select:hover, textarea:hover { border-color: #c8c0b4; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(184,137,46,.1);
+    }
+
+    .input-group { position: relative; }
+
+    .input-prefix {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13.5px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .input-group input { padding-left: 40px; }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' fill='none'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23b8892e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    textarea { resize: vertical; min-height: 84px; line-height: 1.5; }
+
+    .submit-section {
+      padding: 24px 36px 28px;
+      background: #faf8f5;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .submit-btn {
+      flex-shrink: 0;
+      padding: 12px 32px;
+      background: var(--maroon);
+      color: #f5e6c8;
+      border: none;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+
+    .submit-btn:hover:not(:disabled) { background: var(--maroon-2); }
+    .submit-btn:active:not(:disabled) { transform: scale(0.98); }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .submit-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    .submit-note strong {
+      font-weight: 500;
+      color: var(--text-label);
+    }
+
+    .toast {
+      margin: 0 36px 24px;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 13.5px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show { display: flex; }
+
+    .toast.success {
+      background: #f0f9f4;
+      border: 1px solid #a8d5b5;
+      color: #1a5c36;
+    }
+
+    .toast.error {
+      background: #fdf1f0;
+      border: 1px solid #f0b8b4;
+      color: #7f1d1d;
+    }
+
+    .toast-icon { font-size: 16px; flex-shrink: 0; }
+
+    .page-footer {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .page-footer p {
+      font-size: 11.5px;
+      color: #aaa49a;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 540px) {
+      body { padding: 28px 12px 48px; }
+      .card-section { padding: 24px 20px; }
+      .submit-section { padding: 20px; flex-direction: column; align-items: stretch; gap: 14px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .field.span-2 { grid-column: 1; }
+      .toast { margin: 0 20px 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="page-header">
+    <div class="brand-row">
+      <span class="brand-name">Swargaseema</span>
+    </div>
+    <div class="header-rule"><div class="header-rule-dot"></div></div>
+    <p class="page-sub">Please fill in your details and our team will get in touch shortly.</p>
+  </header>
+
+  <div class="form-card">
+
+    <div class="card-section">
+      <div class="section-label">Personal Information</div>
+      <div class="grid-2">
+
+        <div class="field span-2">
+          <label for="name">Full Name <span class="req">*</span></label>
+          <input type="text" id="name" placeholder="Enter your full name" autocomplete="name" required/>
+        </div>
+
+        <div class="field">
+          <label for="mobile">Mobile Number <span class="req">*</span></label>
+          <div class="input-group">
+            <span class="input-prefix">+91</span>
+            <input type="tel" id="mobile" placeholder="98765 43210" maxlength="10" autocomplete="tel" required/>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="age">Age</label>
+          <input type="number" id="age" placeholder="e.g. 34" min="18" max="99"/>
+        </div>
+
+        <div class="field span-2">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="yourname@company.com" autocomplete="email"/>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card-section">
+      <div class="section-label">Professional Details</div>
+      <div class="grid-2">
+
+        <div class="field span-2">
+          <label for="company">Company / Organisation</label>
+          <input type="text" id="company" placeholder="e.g. Infosys, TCS, HDFC Bank"/>
+        </div>
+
+        <div class="field span-2">
+          <label for="role">Designation / Role</label>
+          <input type="text" id="role" placeholder="e.g. Senior Manager, Team Lead"/>
+        </div>
+
+        <div class="field">
+          <label for="executive">Executive Name <span class="req">*</span></label>
+          <input type="text" id="executive" placeholder="Assigned executive" required/>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card-section">
+      <div class="section-label">Address</div>
+      <div class="field">
+        <label for="address">Current Residence</label>
+        <textarea id="address" placeholder="Flat / House No., Street, Area, City"></textarea>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <div class="section-label">Notes</div>
+      <div class="field">
+        <label for="notes">Additional Notes</label>
+        <textarea id="notes" placeholder="Any additional information about this customer…" style="min-height: 100px;"></textarea>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">
+      <span class="toast-icon" id="toast-icon"></span>
+      <span id="toast-msg"></span>
+    </div>
+
+    <div class="submit-section">
+      <button class="submit-btn" id="submitBtn" type="button">Submit</button>
+      <p class="submit-note">
+        <strong>Confidential.</strong> Your information is only used for follow-up by our sales team.
+      </p>
+    </div>
+
+  </div>
+
+  <footer class="page-footer">
+    <p>© 2025 Swargaseema Properties &nbsp;·&nbsp; Hyderabad</p>
+  </footer>
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz9lcPpXBBn0tvihqNuCZ_1A-iwKcZr8Cu44Vqd4G4v10ArwInKC2sSdhdeeQnb_o0/exec';
+
+  const btn       = document.getElementById('submitBtn');
+  const toast     = document.getElementById('toast');
+  const toastMsg  = document.getElementById('toast-msg');
+  const toastIcon = document.getElementById('toast-icon');
+
+  function showToast(msg, type) {
+    toast.className    = 'toast show ' + type;
+    toastIcon.textContent = type === 'success' ? '✓' : '✕';
+    toastMsg.textContent  = msg;
+    toast.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  btn.addEventListener('click', function () {
+    const name   = document.getElementById('name').value.trim();
+    const mobile = document.getElementById('mobile').value.trim();
+
+    const executive = document.getElementById('executive').value.trim();
+    if (!name)                     { showToast('Please enter the customer\'s full name.', 'error'); return; }
+    if (!/^\d{10}$/.test(mobile))  { showToast('Please enter a valid 10-digit mobile number.', 'error'); return; }
+    if (!executive)                { showToast('Please enter the executive name.', 'error'); return; }
+
+    const payload = {
+      name,
+      mobile:    '+91 ' + mobile,
+      age:       document.getElementById('age').value.trim(),
+      email:     document.getElementById('email').value.trim(),
+      company:   document.getElementById('company').value.trim(),
+      role:      document.getElementById('role').value.trim(),
+      executive: document.getElementById('executive').value.trim(),
+      address:   document.getElementById('address').value.trim(),
+      notes:     document.getElementById('notes').value.trim(),
+      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+    };
+
+    btn.disabled    = true;
+    btn.textContent = 'Submitting…';
+    toast.className = 'toast';
+
+    const cbName = 'cb_' + Date.now();
+    const params  = new URLSearchParams({ ...payload, callback: cbName });
+    const script  = document.createElement('script');
+
+    window[cbName] = function (res) {
+      cleanup();
+      btn.disabled    = false;
+      btn.textContent = 'Submit';
+      if (res && res.result === 'success') {
+        showToast('Enquiry submitted successfully. Our team will contact you shortly.', 'success');
+        ['name','mobile','age','email','company','role','executive','address','notes'].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+      } else {
+        showToast('Submission failed. Please try again or contact us directly.', 'error');
+      }
+    };
+
+    script.onerror = function () {
+      cleanup();
+      btn.disabled    = false;
+      btn.textContent = 'Submit';
+      showToast('Network error. Please check your connection and try again.', 'error');
+    };
+
+    function cleanup() {
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    script.src = APPS_SCRIPT_URL + '?' + params.toString();
+    document.head.appendChild(script);
+  });
+</script>
+</body>
+</html>
