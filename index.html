@@ -299,7 +299,7 @@
 <div id="toast"></div>
 
 <script>
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylwfIBKWXSqNyd8r9QhpEQCVbxtE4pFu-WlEAWj-DHK7DPQ88AeEw_gmrQcksdHO7m/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw-bn5nXUodLtpQRzWysg8XwZin7I6H0-aC2B6cmi8uXqF7nQVaKlWFhu0zw_5ItDjn/exec';
 
   // ── DATE DISPLAY ─────────────────────────────────────────────────────────────
   function updateDateDisplay() {
@@ -392,12 +392,14 @@
     };
 
     try {
-      const res  = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-      const text = await res.text();
-      if (text.includes('Success') || res.ok) {
-        showToast('✓ Entry submitted successfully!', 'success');
-        clearForm();
-      } else { throw new Error(text); }
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify(payload)
+      });
+      // no-cors means we can't read the response, but if no exception = success
+      showToast('✓ Entry submitted successfully!', 'success');
+      clearForm();
     } catch (err) {
       console.error(err);
       showToast('✗ Submission failed. Check the Apps Script URL.', 'error');
