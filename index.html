@@ -1,486 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Swargaseema – Property Enquiry</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stall Data</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf6ee;
+    --cream-dark: #f5e9d9;
+    --gold: #b5892a;
+    --maroon: #7a1717;
+    --maroon-dark: #5c1010;
+    --text: #2c1a0e;
+    --text-mid: #6b4c2a;
+    --border: #ddc9a8;
+    --input-bg: #fdf9f4;
+    --shadow: rgba(90,40,10,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    font-family: 'Jost', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 16px 60px;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(181,137,42,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 90%, rgba(122,23,23,0.05) 0%, transparent 55%);
+  }
 
-    :root {
-      --maroon:      #3d0c10;
-      --maroon-2:    #5a1318;
-      --gold:        #b8892e;
-      --gold-soft:   #d4a84b;
-      --off-white:   #fafaf8;
-      --surface:     #ffffff;
-      --border:      #e8e4dc;
-      --border-focus:#b8892e;
-      --text-primary:#1a1410;
-      --text-muted:  #7a7060;
-      --text-label:  #4a3f35;
-      --input-bg:    #fdfcfa;
-    }
+  /* PAGE HEADER */
+  .page-header { text-align: center; margin-bottom: 36px; }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700; color: var(--maroon); line-height: 1.15;
+  }
+  .page-header .divider {
+    width: 64px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 10px auto 12px;
+  }
+  .page-header .subtitle {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 3.5px; color: var(--text-mid); text-transform: uppercase;
+  }
 
-    html { font-size: 15px; }
+  /* FORM CONTAINER */
+  .form-container {
+    max-width: 820px; margin: 0 auto;
+    background: #fff; border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 32px var(--shadow); overflow: hidden;
+  }
 
-    body {
-      background: var(--off-white);
-      min-height: 100vh;
-      font-family: 'DM Sans', sans-serif;
-      color: var(--text-primary);
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 48px 16px 64px;
-    }
+  /* SECTIONS */
+  .form-section { padding: 28px 32px 24px; border-bottom: 1px solid var(--border); }
+  .form-section:last-of-type { border-bottom: none; }
+  .section-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-    .page {
-      width: 100%;
-      max-width: 640px;
-      animation: fadeUp .5s ease both;
-    }
+  /* GRID ROWS */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .form-row.three-col { grid-template-columns: 1fr 1fr 1fr; }
+  .form-row.single { grid-template-columns: 1fr; }
+  .form-row:last-child { margin-bottom: 0; }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+  /* FORM FIELDS */
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  label { font-size: 10px; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase; color: var(--text-mid); }
+  label .req { color: var(--maroon); margin-left: 2px; }
 
-    .page-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
+  input[type="text"], input[type="email"], input[type="tel"],
+  input[type="number"], input[type="date"], select, textarea {
+    width: 100%; padding: 11px 14px;
+    background: var(--input-bg); border: 1px solid var(--border);
+    border-radius: 7px; font-family: 'Jost', sans-serif;
+    font-size: 14px; color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none; appearance: none;
+  }
+  input::placeholder, textarea::placeholder { color: #bba98a; font-style: italic; font-size: 13px; }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold); box-shadow: 0 0 0 3px rgba(181,137,42,0.1);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b5892a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+    cursor: pointer; padding-right: 36px;
+  }
+  textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
 
-    .brand-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin-bottom: 20px;
-    }
+  /* DATE OVERLAY */
+  .date-wrapper { position: relative; }
+  .date-wrapper input[type="date"] {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    opacity: 0; cursor: pointer; z-index: 2;
+  }
+  .date-display {
+    width: 100%; padding: 11px 14px; min-height: 44px;
+    background: var(--input-bg); border: 1px solid var(--border);
+    border-radius: 7px; font-family: 'Jost', sans-serif;
+    font-size: 14px; color: var(--text);
+    display: flex; align-items: center;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b5892a' stroke-width='2'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+    padding-right: 36px; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .date-wrapper:focus-within .date-display {
+    border-color: var(--gold); box-shadow: 0 0 0 3px rgba(181,137,42,0.1);
+  }
+  .date-display.empty { color: #bba98a; font-style: italic; font-size: 13px; }
 
-    .brand-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      color: var(--maroon);
-    }
+  /* OTHERS WRAPPER */
+  .other-wrapper { display: none; margin-top: 10px; }
 
-    .header-rule {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 0 auto 18px;
-      max-width: 200px;
-    }
+  /* FOOTER */
+  .form-footer {
+    padding: 24px 32px; background: var(--cream-dark);
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .btn-submit {
+    padding: 13px 32px; background: var(--maroon); color: #fff;
+    border: none; border-radius: 7px; font-family: 'Jost', sans-serif;
+    font-size: 12px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-submit:hover { background: var(--maroon-dark); }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-clear {
+    padding: 13px 24px; background: transparent; color: var(--text-mid);
+    border: 1px solid var(--border); border-radius: 7px;
+    font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-clear:hover { border-color: var(--gold); color: var(--gold); }
+  .required-note { margin-left: auto; font-size: 12px; color: var(--text-mid); }
+  .required-note span { color: var(--maroon); }
 
-    .header-rule::before, .header-rule::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--gold);
-      opacity: 0.5;
-    }
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: 30px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #2c1a0e; color: #fff; padding: 14px 28px;
+    border-radius: 8px; font-size: 14px; font-family: 'Jost', sans-serif;
+    opacity: 0; transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none; z-index: 999; white-space: nowrap;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.success { background: #1a4d2e; }
+  #toast.error { background: #7a1717; }
+  .spinner {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.7s linear infinite;
+    vertical-align: middle; margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-    .header-rule-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-
-    .page-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      font-weight: 400;
-      color: var(--text-primary);
-      letter-spacing: 0.01em;
-      margin-bottom: 6px;
-    }
-
-    .page-sub {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      font-weight: 300;
-      letter-spacing: 0.02em;
-    }
-
-    .form-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .card-section {
-      padding: 32px 36px;
-    }
-
-    .card-section + .card-section {
-      border-top: 1px solid var(--border);
-    }
-
-    .section-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 22px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .field { display: flex; flex-direction: column; gap: 7px; }
-    .field.span-2 { grid-column: 1 / -1; }
-
-    label {
-      font-size: 11.5px;
-      font-weight: 500;
-      color: var(--text-label);
-      letter-spacing: 0.04em;
-    }
-
-    .req { color: var(--gold); margin-left: 2px; font-weight: 400; }
-
-    input[type="text"],
-    input[type="tel"],
-    input[type="email"],
-    input[type="number"],
-    select,
-    textarea {
-      width: 100%;
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 10px 14px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--text-primary);
-      outline: none;
-      transition: border-color .18s, box-shadow .18s;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: #c0b8ae;
-      font-weight: 300;
-    }
-
-    input:hover, select:hover, textarea:hover { border-color: #c8c0b4; }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(184,137,46,.1);
-    }
-
-    .input-group { position: relative; }
-
-    .input-prefix {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 13.5px;
-      color: var(--text-muted);
-      pointer-events: none;
-    }
-
-    .input-group input { padding-left: 40px; }
-
-    select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='8' fill='none'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23b8892e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 36px;
-      cursor: pointer;
-    }
-
-    textarea { resize: vertical; min-height: 84px; line-height: 1.5; }
-
-    .submit-section {
-      padding: 24px 36px 28px;
-      background: #faf8f5;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .submit-btn {
-      flex-shrink: 0;
-      padding: 12px 32px;
-      background: var(--maroon);
-      color: #f5e6c8;
-      border: none;
-      border-radius: 4px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background .2s, transform .1s;
-    }
-
-    .submit-btn:hover:not(:disabled) { background: var(--maroon-2); }
-    .submit-btn:active:not(:disabled) { transform: scale(0.98); }
-    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-
-    .submit-note {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.5;
-      font-weight: 300;
-    }
-
-    .submit-note strong {
-      font-weight: 500;
-      color: var(--text-label);
-    }
-
-    .toast {
-      margin: 0 36px 24px;
-      padding: 12px 16px;
-      border-radius: 4px;
-      font-size: 13.5px;
-      display: none;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .toast.show { display: flex; }
-
-    .toast.success {
-      background: #f0f9f4;
-      border: 1px solid #a8d5b5;
-      color: #1a5c36;
-    }
-
-    .toast.error {
-      background: #fdf1f0;
-      border: 1px solid #f0b8b4;
-      color: #7f1d1d;
-    }
-
-    .toast-icon { font-size: 16px; flex-shrink: 0; }
-
-    .page-footer {
-      text-align: center;
-      margin-top: 24px;
-    }
-
-    .page-footer p {
-      font-size: 11.5px;
-      color: #aaa49a;
-      letter-spacing: 0.04em;
-    }
-
-    @media (max-width: 540px) {
-      body { padding: 28px 12px 48px; }
-      .card-section { padding: 24px 20px; }
-      .submit-section { padding: 20px; flex-direction: column; align-items: stretch; gap: 14px; }
-      .grid-2 { grid-template-columns: 1fr; }
-      .field.span-2 { grid-column: 1; }
-      .toast { margin: 0 20px 20px; }
-    }
-  </style>
+  @media (max-width: 640px) {
+    .form-row, .form-row.three-col { grid-template-columns: 1fr; }
+    .form-section { padding: 22px 18px 18px; }
+    .form-footer { padding: 18px; }
+    .required-note { margin-left: 0; }
+  }
+</style>
 </head>
 <body>
-<div class="page">
 
-  <header class="page-header">
-    <div class="brand-row">
-      <span class="brand-name">Swargaseema</span>
+<header class="page-header">
+  <h1>Stall Data</h1>
+  <div class="divider"></div>
+  <p class="subtitle">Sales Executive Entry Form</p>
+</header>
+
+<div class="form-container">
+
+  <!-- ── EXECUTIVE INFORMATION ── -->
+  <div class="form-section">
+    <div class="section-label">Executive Information</div>
+    <div class="form-row three-col">
+
+      <div class="form-group">
+        <label for="executiveName">Executive Name <span class="req">*</span></label>
+        <input type="text" id="executiveName" placeholder="Enter executive name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="venture">Venture <span class="req">*</span></label>
+        <select id="venture" required>
+          <option value="" disabled selected>— Select Venture —</option>
+          <option>Vibhava</option>
+          <option>Ameya</option>
+          <option>Suketana</option>
+          <option>SS1</option>
+          <option>SS2</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Date <span class="req">*</span></label>
+        <div class="date-wrapper">
+          <input type="date" id="entryDate" required />
+          <div class="date-display empty" id="dateDisplay">dd/mm/yyyy</div>
+        </div>
+      </div>
+
     </div>
-    <div class="header-rule"><div class="header-rule-dot"></div></div>
-    <p class="page-sub">Please fill in your details and our team will get in touch shortly.</p>
-  </header>
+  </div>
 
-  <div class="form-card">
+  <!-- ── CUSTOMER INFORMATION ── -->
+  <div class="form-section">
+    <div class="section-label">Customer Information</div>
 
-    <div class="card-section">
-      <div class="section-label">Personal Information</div>
-      <div class="grid-2">
-
-        <div class="field span-2">
-          <label for="name">Full Name <span class="req">*</span></label>
-          <input type="text" id="name" placeholder="Enter your full name" autocomplete="name" required/>
-        </div>
-
-        <div class="field">
-          <label for="mobile">Mobile Number <span class="req">*</span></label>
-          <div class="input-group">
-            <span class="input-prefix">+91</span>
-            <input type="tel" id="mobile" placeholder="98765 43210" maxlength="10" autocomplete="tel" required/>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="age">Age</label>
-          <input type="number" id="age" placeholder="e.g. 34" min="18" max="99"/>
-        </div>
-
-        <div class="field span-2">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" placeholder="yourname@company.com" autocomplete="email"/>
-        </div>
-
+    <div class="form-row">
+      <div class="form-group">
+        <label for="customerName">Customer Name <span class="req">*</span></label>
+        <input type="text" id="customerName" placeholder="Full name" required />
+      </div>
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" placeholder="Age" min="18" max="99" />
       </div>
     </div>
 
-    <div class="card-section">
-      <div class="section-label">Professional Details</div>
-      <div class="grid-2">
-
-        <div class="field span-2">
-          <label for="company">Company / Organisation</label>
-          <input type="text" id="company" placeholder="e.g. Infosys, TCS, HDFC Bank"/>
-        </div>
-
-        <div class="field span-2">
-          <label for="role">Designation / Role</label>
-          <input type="text" id="role" placeholder="e.g. Senior Manager, Team Lead"/>
-        </div>
-
-        <div class="field">
-          <label for="executive">Executive Name <span class="req">*</span></label>
-          <input type="text" id="executive" placeholder="Assigned executive" required/>
-        </div>
-
+    <div class="form-row">
+      <div class="form-group">
+        <label for="email">Email ID</label>
+        <input type="email" id="email" placeholder="email@example.com" />
+      </div>
+      <div class="form-group">
+        <label for="mobile">Mobile Number <span class="req">*</span></label>
+        <input type="tel" id="mobile" placeholder="+91 00000 00000" required />
       </div>
     </div>
 
-    <div class="card-section">
-      <div class="section-label">Address</div>
-      <div class="field">
-        <label for="address">Current Residence</label>
-        <textarea id="address" placeholder="Flat / House No., Street, Area, City"></textarea>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="occupation">Occupation</label>
+        <select id="occupation">
+          <option value="">— Select Occupation —</option>
+          <option>Business</option>
+          <option>Salaried</option>
+          <option>Government Employee</option>
+          <option>Retired</option>
+          <option>NRI</option>
+          <option value="Others">Others</option>
+        </select>
+        <div class="other-wrapper" id="occupationOtherWrapper">
+          <input type="text" id="occupationOtherText" placeholder="Enter occupation…" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="vehicle">Vehicle</label>
+        <select id="vehicle">
+          <option value="">— Select Vehicle —</option>
+          <option>Company Vehicle</option>
+          <option>Own Vehicle</option>
+          <option value="Others">Others</option>
+        </select>
+        <div class="other-wrapper" id="vehicleOtherWrapper">
+          <input type="text" id="vehicleOtherText" placeholder="Enter vehicle details…" />
+        </div>
       </div>
     </div>
 
-    <div class="card-section">
-      <div class="section-label">Notes</div>
-      <div class="field">
-        <label for="notes">Additional Notes</label>
-        <textarea id="notes" placeholder="Any additional information about this customer…" style="min-height: 100px;"></textarea>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="location">Location (Current City / Area)</label>
+        <input type="text" id="location" placeholder="e.g. Gachibowli, Hyderabad" />
+      </div>
+      <div class="form-group">
+        <label for="nativePlace">Native Place</label>
+        <input type="text" id="nativePlace" placeholder="e.g. Warangal, Telangana" />
       </div>
     </div>
 
-    <div class="toast" id="toast">
-      <span class="toast-icon" id="toast-icon"></span>
-      <span id="toast-msg"></span>
-    </div>
-
-    <div class="submit-section">
-      <button class="submit-btn" id="submitBtn" type="button">Submit</button>
-      <p class="submit-note">
-        <strong>Confidential.</strong> Your information is only used for follow-up by our sales team.
-      </p>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="noOfPeople">No. of People</label>
+        <input type="number" id="noOfPeople" placeholder="How many people visited?" min="1" />
+      </div>
+      <div class="form-group">
+        <label for="channel">Channel <span class="req">*</span></label>
+        <select id="channel" required>
+          <option value="" disabled selected>— Select Channel —</option>
+          <option>Lead Space</option>
+          <option>Bhakti</option>
+          <option>ABN</option>
+          <option>TV5</option>
+          <option>Sakshi</option>
+          <option>ETV AP/TS</option>
+          <option>Metro</option>
+          <option>FM</option>
+          <option>10TV</option>
+          <option>VNR Digital</option>
+          <option>Hindu Darma</option>
+          <option>Auto Ads</option>
+          <option>YouTube 1</option>
+          <option>YouTube 2</option>
+          <option>Facebook</option>
+          <option>ABN Digital</option>
+          <option>Bakthi Doc</option>
+          <option>ABN Doc</option>
+          <option>TV5 Doc</option>
+          <option>ETV AP/TS Doc</option>
+          <option>Sakshi Doc</option>
+          <option>V6 Doc</option>
+          <option>Enadu Magazine</option>
+          <option>AJ Magazine</option>
+          <option>Enadu PA</option>
+          <option>AJ PA</option>
+          <option>Sakshi PA</option>
+          <option>Economic Times PA</option>
+          <option>Hindu PA</option>
+          <option>Other PA</option>
+          <option>Hoardings</option>
+          <option>Vijayawada Hor</option>
+          <option>Gated Community</option>
+          <option>Restaurant</option>
+          <option>ETV Life</option>
+          <option>ETV Win</option>
+          <option>HMTV</option>
+          <option>Maha News</option>
+          <option>CVR News</option>
+          <option>Prime 9</option>
+          <option>Bhanu digital</option>
+          <option>V6</option>
+          <option>Website</option>
+          <option>BK Channel</option>
+          <option>NTV</option>
+          <option>RCS Msg</option>
+          <option>Web enquiry</option>
+          <option>Bulk data</option>
+          <option>Credai</option>
+          <option>Reference</option>
+          <option>Outgoing</option>
+          <option>EX-Owner</option>
+          <option>DSV</option>
+          <option>Sai Anurag Colony</option>
+          <option>ETV Ent</option>
+          <option>Weekend Home</option>
+          <option value="Others">Others</option>
+        </select>
+        <div class="other-wrapper" id="channelOtherWrapper">
+          <input type="text" id="channelOtherText" placeholder="Enter channel name…" />
+        </div>
+      </div>
     </div>
 
   </div>
 
-  <footer class="page-footer">
-    <p>© 2025 Swargaseema Properties &nbsp;·&nbsp; Hyderabad</p>
-  </footer>
+  <!-- ── ADDITIONAL NOTES ── -->
+  <div class="form-section">
+    <div class="section-label">Additional Notes</div>
+    <div class="form-row single">
+      <div class="form-group">
+        <label for="remarks">Note / Remarks</label>
+        <textarea id="remarks" placeholder="Any additional observations, interest level, follow-up notes…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="form-footer">
+    <button class="btn-submit" id="submitBtn" onclick="submitForm()">Submit Entry</button>
+    <button class="btn-clear" onclick="clearForm()">Clear Form</button>
+    <p class="required-note">Fields marked <span>*</span> are required</p>
+  </div>
+
 </div>
 
+<div id="toast"></div>
+
 <script>
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz9lcPpXBBn0tvihqNuCZ_1A-iwKcZr8Cu44Vqd4G4v10ArwInKC2sSdhdeeQnb_o0/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylwfIBKWXSqNyd8r9QhpEQCVbxtE4pFu-WlEAWj-DHK7DPQ88AeEw_gmrQcksdHO7m/exec';
 
-  const btn       = document.getElementById('submitBtn');
-  const toast     = document.getElementById('toast');
-  const toastMsg  = document.getElementById('toast-msg');
-  const toastIcon = document.getElementById('toast-icon');
-
-  function showToast(msg, type) {
-    toast.className    = 'toast show ' + type;
-    toastIcon.textContent = type === 'success' ? '✓' : '✕';
-    toastMsg.textContent  = msg;
-    toast.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  // ── DATE DISPLAY ─────────────────────────────────────────────────────────────
+  function updateDateDisplay() {
+    const val  = document.getElementById('entryDate').value;
+    const disp = document.getElementById('dateDisplay');
+    if (val) {
+      const [y, m, d] = val.split('-');
+      disp.textContent = `${d}/${m}/${y}`;
+      disp.classList.remove('empty');
+    } else {
+      disp.textContent = 'dd/mm/yyyy';
+      disp.classList.add('empty');
+    }
   }
 
-  btn.addEventListener('click', function () {
-    const name   = document.getElementById('name').value.trim();
-    const mobile = document.getElementById('mobile').value.trim();
+  // Set today on load
+  (function () {
+    const n = new Date();
+    const yyyy = n.getFullYear();
+    const mm   = String(n.getMonth() + 1).padStart(2, '0');
+    const dd   = String(n.getDate()).padStart(2, '0');
+    document.getElementById('entryDate').value = `${yyyy}-${mm}-${dd}`;
+    updateDateDisplay();
+  })();
 
-    const executive = document.getElementById('executive').value.trim();
-    if (!name)                     { showToast('Please enter the customer\'s full name.', 'error'); return; }
-    if (!/^\d{10}$/.test(mobile))  { showToast('Please enter a valid 10-digit mobile number.', 'error'); return; }
-    if (!executive)                { showToast('Please enter the executive name.', 'error'); return; }
+  document.getElementById('entryDate').addEventListener('change', updateDateDisplay);
+
+  // ── OTHERS TOGGLES ───────────────────────────────────────────────────────────
+  function bindOthers(selectId, wrapperId, inputId) {
+    document.getElementById(selectId).addEventListener('change', function () {
+      const w = document.getElementById(wrapperId);
+      const i = document.getElementById(inputId);
+      if (this.value === 'Others') {
+        w.style.display = 'block'; i.required = true;
+      } else {
+        w.style.display = 'none'; i.required = false; i.value = '';
+      }
+    });
+  }
+
+  bindOthers('occupation',    'occupationOtherWrapper', 'occupationOtherText');
+  bindOthers('vehicle',       'vehicleOtherWrapper',    'vehicleOtherText');
+  bindOthers('channel',       'channelOtherWrapper',    'channelOtherText');
+
+  // ── GET VALUE (handles Others) ───────────────────────────────────────────────
+  function getVal(selectId, otherId) {
+    const s = document.getElementById(selectId);
+    return s.value === 'Others' ? document.getElementById(otherId).value.trim() : s.value;
+  }
+
+  // ── TOAST ────────────────────────────────────────────────────────────────────
+  function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.innerHTML = msg; t.className = 'show ' + type;
+    setTimeout(() => { t.className = ''; }, 3500);
+  }
+
+  // ── VALIDATE ─────────────────────────────────────────────────────────────────
+  function validateForm() {
+    if (!document.getElementById('executiveName').value.trim()) { showToast('⚠ Please enter an executive name.', 'error'); return false; }
+    if (!document.getElementById('venture').value)              { showToast('⚠ Please select a venture.', 'error'); return false; }
+    if (!document.getElementById('entryDate').value)            { showToast('⚠ Please select a date.', 'error'); return false; }
+    if (!document.getElementById('customerName').value.trim())  { showToast('⚠ Customer name is required.', 'error'); return false; }
+    if (!document.getElementById('mobile').value.trim())        { showToast('⚠ Mobile number is required.', 'error'); return false; }
+    if (!getVal('channel', 'channelOtherText'))                 { showToast('⚠ Please select a channel.', 'error'); return false; }
+    return true;
+  }
+
+  // ── SUBMIT ───────────────────────────────────────────────────────────────────
+  async function submitForm() {
+    if (!validateForm()) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.innerHTML = '<span class="spinner"></span> Submitting…';
+    btn.disabled = true;
+
+    const dateVal = document.getElementById('entryDate').value;
+    const [y, m, d] = dateVal.split('-');
 
     const payload = {
-      name,
-      mobile:    '+91 ' + mobile,
-      age:       document.getElementById('age').value.trim(),
-      email:     document.getElementById('email').value.trim(),
-      company:   document.getElementById('company').value.trim(),
-      role:      document.getElementById('role').value.trim(),
-      executive: document.getElementById('executive').value.trim(),
-      address:   document.getElementById('address').value.trim(),
-      notes:     document.getElementById('notes').value.trim(),
-      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+      timestamp:     new Date().toISOString(),
+      executiveName: document.getElementById('executiveName').value.trim(),
+      venture:       document.getElementById('venture').value,
+      date:          `${d}/${m}/${y}`,
+      customerName:  document.getElementById('customerName').value.trim(),
+      age:           document.getElementById('age').value.trim(),
+      email:         document.getElementById('email').value.trim(),
+      mobile:        document.getElementById('mobile').value.trim(),
+      occupation:    getVal('occupation', 'occupationOtherText'),
+      vehicle:       getVal('vehicle', 'vehicleOtherText'),
+      location:      document.getElementById('location').value.trim(),
+      nativePlace:   document.getElementById('nativePlace').value.trim(),
+      noOfPeople:    document.getElementById('noOfPeople').value.trim(),
+      channel:       getVal('channel', 'channelOtherText'),
+      remarks:       document.getElementById('remarks').value.trim()
     };
 
-    btn.disabled    = true;
-    btn.textContent = 'Submitting…';
-    toast.className = 'toast';
-
-    const cbName = 'cb_' + Date.now();
-    const params  = new URLSearchParams({ ...payload, callback: cbName });
-    const script  = document.createElement('script');
-
-    window[cbName] = function (res) {
-      cleanup();
-      btn.disabled    = false;
-      btn.textContent = 'Submit';
-      if (res && res.result === 'success') {
-        showToast('Enquiry submitted successfully. Our team will contact you shortly.', 'success');
-        ['name','mobile','age','email','company','role','executive','address','notes'].forEach(function(id) {
-          var el = document.getElementById(id);
-          if (el) el.value = '';
-        });
-      } else {
-        showToast('Submission failed. Please try again or contact us directly.', 'error');
-      }
-    };
-
-    script.onerror = function () {
-      cleanup();
-      btn.disabled    = false;
-      btn.textContent = 'Submit';
-      showToast('Network error. Please check your connection and try again.', 'error');
-    };
-
-    function cleanup() {
-      delete window[cbName];
-      if (script.parentNode) script.parentNode.removeChild(script);
+    try {
+      const res  = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+      const text = await res.text();
+      if (text.includes('Success') || res.ok) {
+        showToast('✓ Entry submitted successfully!', 'success');
+        clearForm();
+      } else { throw new Error(text); }
+    } catch (err) {
+      console.error(err);
+      showToast('✗ Submission failed. Check the Apps Script URL.', 'error');
+    } finally {
+      btn.innerHTML = 'Submit Entry'; btn.disabled = false;
     }
+  }
 
-    script.src = APPS_SCRIPT_URL + '?' + params.toString();
-    document.head.appendChild(script);
-  });
+  // ── CLEAR ────────────────────────────────────────────────────────────────────
+  function clearForm() {
+    ['venture','occupation','vehicle','channel'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    ['occupationOtherWrapper','vehicleOtherWrapper','channelOtherWrapper'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
+    });
+    ['occupationOtherText','vehicleOtherText','channelOtherText'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    const n = new Date();
+    document.getElementById('entryDate').value =
+      `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;
+    updateDateDisplay();
+    ['executiveName','customerName','age','email','mobile','location','nativePlace','noOfPeople','remarks'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+  }
 </script>
 </body>
 </html>
