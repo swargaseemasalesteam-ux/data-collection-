@@ -258,18 +258,7 @@
           <input type="text" id="occupationOtherText" placeholder="Enter occupation…" />
         </div>
       </div>
-      <div class="form-group">
-        <label for="vehicle">Vehicle</label>
-        <select id="vehicle">
-          <option value="">— Select Vehicle —</option>
-          <option>Company Vehicle</option>
-          <option>Own Vehicle</option>
-          <option value="Others">Others</option>
-        </select>
-        <div class="other-wrapper" id="vehicleOtherWrapper">
-          <input type="text" id="vehicleOtherText" placeholder="Enter vehicle details…" />
-        </div>
-      </div>
+<div class="form-group"></div>
     </div>
 
     <div class="form-row">
@@ -283,78 +272,7 @@
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label for="noOfPeople">No. of People</label>
-        <input type="number" id="noOfPeople" placeholder="How many people visited?" min="1" />
-      </div>
-      <div class="form-group">
-        <label for="channel">Channel <span class="req">*</span></label>
-        <select id="channel" required>
-          <option value="" disabled selected>— Select Channel —</option>
-          <option>Lead Space</option>
-          <option>Bhakti</option>
-          <option>ABN</option>
-          <option>TV5</option>
-          <option>Sakshi</option>
-          <option>ETV AP/TS</option>
-          <option>Metro</option>
-          <option>FM</option>
-          <option>10TV</option>
-          <option>VNR Digital</option>
-          <option>Hindu Darma</option>
-          <option>Auto Ads</option>
-          <option>YouTube 1</option>
-          <option>YouTube 2</option>
-          <option>Facebook</option>
-          <option>ABN Digital</option>
-          <option>Bakthi Doc</option>
-          <option>ABN Doc</option>
-          <option>TV5 Doc</option>
-          <option>ETV AP/TS Doc</option>
-          <option>Sakshi Doc</option>
-          <option>V6 Doc</option>
-          <option>Enadu Magazine</option>
-          <option>AJ Magazine</option>
-          <option>Enadu PA</option>
-          <option>AJ PA</option>
-          <option>Sakshi PA</option>
-          <option>Economic Times PA</option>
-          <option>Hindu PA</option>
-          <option>Other PA</option>
-          <option>Hoardings</option>
-          <option>Vijayawada Hor</option>
-          <option>Gated Community</option>
-          <option>Restaurant</option>
-          <option>ETV Life</option>
-          <option>ETV Win</option>
-          <option>HMTV</option>
-          <option>Maha News</option>
-          <option>CVR News</option>
-          <option>Prime 9</option>
-          <option>Bhanu digital</option>
-          <option>V6</option>
-          <option>Website</option>
-          <option>BK Channel</option>
-          <option>NTV</option>
-          <option>RCS Msg</option>
-          <option>Web enquiry</option>
-          <option>Bulk data</option>
-          <option>Credai</option>
-          <option>Reference</option>
-          <option>Outgoing</option>
-          <option>EX-Owner</option>
-          <option>DSV</option>
-          <option>Sai Anurag Colony</option>
-          <option>ETV Ent</option>
-          <option>Weekend Home</option>
-          <option value="Others">Others</option>
-        </select>
-        <div class="other-wrapper" id="channelOtherWrapper">
-          <input type="text" id="channelOtherText" placeholder="Enter channel name…" />
-        </div>
-      </div>
-    </div>
+
 
   </div>
 
@@ -423,8 +341,6 @@
   }
 
   bindOthers('occupation',    'occupationOtherWrapper', 'occupationOtherText');
-  bindOthers('vehicle',       'vehicleOtherWrapper',    'vehicleOtherText');
-  bindOthers('channel',       'channelOtherWrapper',    'channelOtherText');
 
   // ── GET VALUE (handles Others) ───────────────────────────────────────────────
   function getVal(selectId, otherId) {
@@ -446,7 +362,6 @@
     if (!document.getElementById('entryDate').value)            { showToast('⚠ Please select a date.', 'error'); return false; }
     if (!document.getElementById('customerName').value.trim())  { showToast('⚠ Customer name is required.', 'error'); return false; }
     if (!document.getElementById('mobile').value.trim())        { showToast('⚠ Mobile number is required.', 'error'); return false; }
-    if (!getVal('channel', 'channelOtherText'))                 { showToast('⚠ Please select a channel.', 'error'); return false; }
     return true;
   }
 
@@ -471,11 +386,8 @@
       email:         document.getElementById('email').value.trim(),
       mobile:        document.getElementById('mobile').value.trim(),
       occupation:    getVal('occupation', 'occupationOtherText'),
-      vehicle:       getVal('vehicle', 'vehicleOtherText'),
       location:      document.getElementById('location').value.trim(),
       nativePlace:   document.getElementById('nativePlace').value.trim(),
-      noOfPeople:    document.getElementById('noOfPeople').value.trim(),
-      channel:       getVal('channel', 'channelOtherText'),
       remarks:       document.getElementById('remarks').value.trim()
     };
 
@@ -496,20 +408,20 @@
 
   // ── CLEAR ────────────────────────────────────────────────────────────────────
   function clearForm() {
-    ['venture','occupation','vehicle','channel'].forEach(id => {
+    ['venture','occupation'].forEach(id => {
       document.getElementById(id).value = '';
     });
-    ['occupationOtherWrapper','vehicleOtherWrapper','channelOtherWrapper'].forEach(id => {
+    ['occupationOtherWrapper'].forEach(id => {
       document.getElementById(id).style.display = 'none';
     });
-    ['occupationOtherText','vehicleOtherText','channelOtherText'].forEach(id => {
+    ['occupationOtherText'].forEach(id => {
       document.getElementById(id).value = '';
     });
     const n = new Date();
     document.getElementById('entryDate').value =
       `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;
     updateDateDisplay();
-    ['executiveName','customerName','age','email','mobile','location','nativePlace','noOfPeople','remarks'].forEach(id => {
+    ['executiveName','customerName','age','email','mobile','location','nativePlace','remarks'].forEach(id => {
       document.getElementById(id).value = '';
     });
   }
